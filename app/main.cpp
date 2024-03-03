@@ -1,21 +1,20 @@
+// include the basic windows header file
 #include <windows.h>
 #include <windowsx.h>
 #include <tchar.h>
 #include <iostream>
-#include <d3d12.h>
+#include <chrono>
+#include <thread>
 
-#pragma comment(lib, "d3d12.lib")
+using namespace std;
 
-LPDIRECT3D12 d3d;
-LPDIRECT3DDEVICE12 d3ddev;    
-
-
+// the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-
+// the entry point for any Windows program
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
     // the handle for the window, filled by a function
-    HWND hwnd;
+    HWND hWnd;
     // this struct holds information for the window class
     WNDCLASSEX wc;
 
@@ -29,13 +28,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.hInstance = hInstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = _T("WindowClass");
+    wc.lpszClassName = _T("WindowClass1");
 
     // register the window class
     RegisterClassEx(&wc);
+
     // create the window and use the result as the handle
-    hwnd = CreateWindowEx(NULL,
-                          _T("WindowClass"),    // name of the window class
+    hWnd = CreateWindowEx(NULL,
+                          _T("WindowClass1"),    // name of the window class
                           _T("Game"),   // title of the window
                           WS_OVERLAPPEDWINDOW,    // window style
                           300,    // x-position of the window
@@ -48,26 +48,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                           NULL);    // used with multiple windows, NULL
 
     // display the window on the screen
-    ShowWindow(hwnd, nCmdShow);
+    ShowWindow(hWnd, nCmdShow);
 
     // enter the main loop:
 
     // this struct holds Windows event messages
     MSG msg;
-    // Enter the infinate message group
-    while(TRUE)
-    {   
+
+    // wait for the next message in the queue, store the result in 'msg'
+    while(true) {
+        // Check to see if any messages are waiting in the queue
         while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             // translate keystroke messages into the right format
             TranslateMessage(&msg);
+
             // send the message to the WindowProc function
             DispatchMessage(&msg);
         }
-        if (msg.message == WM_QUIT) {
-            break;
-        }
 
-        //Run game code here
+        // If the message is WM_QUIT, exit the while loop
+        if(msg.message == WM_QUIT)
+            break;
+
+        // Run game code here
+        // ...
+        // ...
     }
 
     // return this part of the WM_QUIT message to Windows
