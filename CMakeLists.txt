@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(main VERSION 1.0)
+project(Main VERSION 1.0)
 
 include_directories(
-    engine
     )
 
 set(SOURCES
-    app/main.cpp
+    src/Main.cpp
+    src/Engine.cpp
+    src/DXSetup.cpp
     )
 
 add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
